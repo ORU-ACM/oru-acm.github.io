@@ -1,0 +1,244 @@
+3   PROGRAM travesty (input, output);
+
+22  CONST
+23     ArraySize = 3000;
+24     MaxPat = 9;
+
+26  VAR
+27    BigArray : PACKED ARRAY [1..ArraySize] of CHAR;
+28    FreqArray, StartSkip : ARRAY[''..'|'] of INTEGER;
+29    Pattern : PACKED ARRAY [1..MaxPat] of CHAR;
+30    SkipArray : ARRAY [1..ArraySize] of INTEGER;
+31    OutChars : INTEGER;
+32    PatLength : INTEGER;
+33    f : TEXT;
+34    CharCount : INTEGER;
+35    Verse, NearEnd : BOOLEAN;
+36    NewChar : CHAR;
+37    TotalChars : INTEGER;
+38    Seed : INTEGER;
+
+40  FUNCTION Random (VAR RandInt : INTEGER) : REAL;
+41  BEGIN
+42    Random := RandInt / 1009;
+43    RandInt := (31 * RandInt + 11) MOD 1009
+44  END;
+
+46  PROCEDURE InParams;
+47  ( * Obtains user's instructions * )
+48  VAR
+49    InFile : STRING [12];
+50    Response : CHAR;
+51  BEGIN
+52    WRITELN ('Enter a Seed (1..1000) for the randomizer');
+53    READLN (Seed);
+54    WRITELN ('Number of characters to be output?');
+55    READLN (OutChars);
+56    REPEAT
+57      WRITELN ('What order? <2-', MaxPat,'>');
+58      READLN (PatLength)
+59    UNTIL (PatLength IN [2..Maxpat]);
+60    PatLength := PatLength - 1;
+61    WRITELN ('Name of input file?');
+62    READLN (InFile);
+63    ASSIGN(f, InFile);
+64    RESET (f);
+65    WRITELN ('Prose or Verse? <p/v>');
+66    READLN (Response);
+67    IF (Response = 'V') OR (Response = 'v') THEN
+68       Verse := true
+69    ELSE Verse := false
+70  END; {Procedure InParams}
+
+72  PROCEDURE ClearFreq;
+73  (* FreqArray is indexed by 93 probable ASCII characters,         *)
+74  (* from "" to "|". Its elements are all set to zero.             *)
+75  VAR
+76    ch : CHAR;
+77  BEGIN
+78    FOR ch := '' TO '|' DO
+79     FreqArray[ch] := 0
+80  END; {Procedure ClearFreq}
+
+82  PROCEDURE NullArrays;
+83  (*  Fill BigArray and Pattern with nulls   *)
+84  VAR
+85   j : INTEGER;
+86  BEGIN
+87    FOR j:= 1 TO ArraySize DO
+88      BigArray[j] := CHR(0);
+89    FOR j := 1 TO MaxPat DO
+90      Pattern[j] := CHR(0)
+91  END; {Procedure NullArrays}
+
+93  PROCEDURE FillArray;                 
+94  (*  Moves textfile from disk into BigArray, cleaning it         *)
+95  (*  up and reducing any run of blanks to one blank.             *)
+96  (*  Then copies to end of array a string of its opening         *)
+97  (*  characters as long as the Pattern, in effect wrapping       *)
+98  (*  the end to the beginning.                                   *)
+99  VAR
+100   Blank : BOOLEAN;
+101   ch: CHAR;
+102   j : INTEGER;
+
+104   PROCEDURE Cleanup;
+105   (* Clears Carriage Returns, Linefeeds, and Tabs out of        *)
+106   (* input stream. All are changed to blanks.                   *)
+107 BEGIN
+108  IF (( ch = CHR(13))      {CR}
+109      OR (ch = CHR(10))    {LF}
+110      OR (ch = CHR(9))     {TAB}
+111  THEN ch := ''                                             
+112 END;
+
+114 BEGIN {Procedure FillArray}
+115  j := 1;
+116  Blank := false;
+117  WHILE (NOT EOF(f)) AND (j <= (ArraySize-MaxPat)) DO
+118  BEGIN {While not EOF}
+119   READ (f, ch);
+120   Cleanup;
+121   BigArray[j] := ch;               {Place character in BigArray}
+122   IF ch = '' THEN Blank := true;
+123   j := j + 1;
+124   WHILE (Blank AND (NOT EOF(f))
+125     AND (j <= (ArraySize-MaxPat))) DO
+126   BEGIN {While Blank}              {When a blank has just been}
+127     READ (f, ch);                  {printed, Blank is true,}
+128     Cleanup;                       {so succeeding blanks are skipped,}
+129     IF ch <> '' THEN               {thus stopping runs.}
+130     BEGIN {If}
+131       Blank := false;
+132       BigArray[j] := ch;
+133       j := j + 1
+134     END {If}
+135   END {While Blank}
+136 END; {While Not EOF}
+137 TotalChars := j - 1;
+138 IF BidArray[TotalChars] <> '' THEN
+139 BEGIN                              {If no Blank at end of text, append one}
+140   TotalChars := TotalChars + 1;
+141   BigArray[TotalChars] := ''
+142 END;
+143 {Copy front of array to back to simulate wraparound.}
+144 FOR j := 1 TO PatLength DO
+145   BigArray[TotalChars+j] := BigArray[j];
+146  TotalChars := TotalChars + PatLength;
+147  WRITELN('Characters read, plus wraparound = ',TotalChars:4)
+148 END; {Procedure FillArray}
+
+150 PROCEDURE FirstPattern;
+151 (*   User selects "order" of operation, an integer, n, in the             *)
+152 (*   range 1..9. The input text will henceforth be scanned                *)
+153 (*   in n-sized chunks. The first n-1 characters of the input             *)
+154 (*   file are placed in the "Pattern" Array. The Pattern is               *)
+155 (*   written at the head of output.                                       *)
+156 VAR
+157   j:INTEGER;
+158 BEGIN
+159   FOR j := 1 TO PatLength DO                {Put opening chars into Pattern}
+160     Pattern[j] := BigArray[j];
+161   CharCount := PatLength;
+162   NearEnd := false;
+163   IF Verse THEN ('');                       {Align first line}
+164   FOR j := 1 TO PatLength DO
+165    WRITE (Pattern[j])
+166   END; {Procedure FirstPattern}
+
+168 PROCEDURE InitSkip;
+177 VAR
+178   ch : CHAR;
+179   j : INTEGER;
+180 BEGIN
+181  FOR ch := '' TO '|' DO
+182   StartSkip[ch] := TotalChars + 1;
+183  FOR j := TotalChars DOWNTO 1 DO
+184  BEGIN
+185   ch := BigArray[j];
+186   SkipArray[j] := StartSkip[ch];
+187   StartSkip[ch] := j
+188   END
+189 END;  {Procedure InitSkip}
+
+191 PROCEDURE Match;
+198 VAR
+199   i : INTEGER;
+200   j : INTEGER;
+201   Found : BOOLEAN;
+202   ch1 : CHAR;
+203   NxtCh : CHAR;
+204 BEGIN
+205   ch1 := Pattern[1];
+206   i := StartSkip[ch1] - 1;
+207   WHILE (i <= TotalChars-PatLength-1) DO
+208   BEGIN
+209    j := 1;
+210    Found := true;
+211    WHILE (Found AND (j <= PatLength)) DO
+212      IF BigArray[i+j] <> Pattern[j]
+213        THEN Found:= false
+214        ELSE j := j + 1;
+215   IF Found THEN
+216   BEGIN
+217     NxtCh := BigArray[i + PatLength +1];
+218     FreqArray[NxtCh] := FreqArray[NxtCh] +1
+219   END;
+220   i := SkipArray[i+1] - 1
+221  END
+222 END;
+
+224 PROCEDURE WriteCharacter;
+232 VAR
+233    Counter, Total, Toss : INTEGER;
+234    ch : CHAR;
+235 BEGIN
+236   Total := 0;
+237   FOR ch := '' TO '|' DO
+238   Total := Total + FreqArray[ch];
+239   Toss := TRUNC (Total * Random(Seed)) +1;
+240   Counter := 31;
+241   REPEAT
+242     Counter := Counter +1;
+243     Toss := Toss-FreqArray[CHR(Counter)]
+244     until Toss <= 0;
+245   NewChar := CHR(Counter);
+246   IF NewChar <> '|' THEN
+247     Write (NewChar);
+248   CharCount := CharCount +1;
+249   IF CharCount MOD 50 = 0 THEN NearEnd := true;
+250   IF ((Verse) AND (NewChar = '|')) THEN WRITELN;
+251   IF ((NearEnd) AND (NewChar = '')) THEN
+252   BEGIN
+253    WRITELN;
+254    IF Verse THEN WRITE ('   ');
+255    NearEnd := false
+256   END
+257 END;
+
+259 PROCEDURE NewPattern;
+263 VAR
+264   j : INTEGER;
+265 BEGIN
+266   FOR j := 1 to PatLength - 1 DO
+267     Pattern[j] := Pattern[j+1];
+268   Pattern[PatLength] := NewChar;
+269   ClearFreq
+270 END;
+
+272 BEGIN
+273   ClearFreq;
+274   NullArrays;
+275   InParams;
+276   FillArray;
+277   FirstPattern;
+278   InitSkip;
+279   REPEAT
+280     Match;
+281     WriteCharacter;
+282     NewPattern
+283   UNTIL CharCount >= OutChars;
+284 END. {Main Program}
+
+
+
