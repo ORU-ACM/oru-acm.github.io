@@ -16,6 +16,8 @@ body::before {
 body {
     min-height: 100vh;
     font-family: 'Poppins', serif;
+    padding: 0;
+    margin: 0;
 }
 
 #map {
@@ -28,4 +30,9 @@ body {
     .news-input {
       width: 50%;
     }
+}
+
+footer {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
