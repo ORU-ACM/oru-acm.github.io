@@ -1,28 +1,28 @@
-3   PROGRAM travesty (input, output);
+PROGRAM travesty (input, output);
 
-22  CONST
-23     ArraySize = 3000;
-24     MaxPat = 9;
+CONST
+ArraySize = 3000;
+MaxPat = 9;
 
-26  VAR
-27    BigArray : PACKED ARRAY [1..ArraySize] of CHAR;
-28    FreqArray, StartSkip : ARRAY[''..'|'] of INTEGER;
-29    Pattern : PACKED ARRAY [1..MaxPat] of CHAR;
-30    SkipArray : ARRAY [1..ArraySize] of INTEGER;
-31    OutChars : INTEGER;
-32    PatLength : INTEGER;
-33    f : TEXT;
-34    CharCount : INTEGER;
-35    Verse, NearEnd : BOOLEAN;
-36    NewChar : CHAR;
-37    TotalChars : INTEGER;
-38    Seed : INTEGER;
+VAR
+ BigArray : PACKED ARRAY [1..ArraySize] of CHAR;
+ FreqArray, StartSkip : ARRAY[''..'|'] of INTEGER;
+ Pattern : PACKED ARRAY [1..MaxPat] of CHAR;
+ SkipArray : ARRAY [1..ArraySize] of INTEGER;
+ OutChars : INTEGER;
+ PatLength : INTEGER;
+ f : TEXT;
+ CharCount : INTEGER;
+ Verse, NearEnd : BOOLEAN;
+ NewChar : CHAR;
+ TotalChars : INTEGER;
+ Seed : INTEGER;
 
-40  FUNCTION Random (VAR RandInt : INTEGER) : REAL;
-41  BEGIN
-42    Random := RandInt / 1009;
-43    RandInt := (31 * RandInt + 11) MOD 1009
-44  END;
+ FUNCTION Random (VAR RandInt : INTEGER) : REAL;
+ BEGIN
+  Random := RandInt / 1009;
+  RandInt := (31 * RandInt + 11) MOD 1009
+ END;
 
 46  PROCEDURE InParams;
 47  ( * Obtains user's instructions * )
