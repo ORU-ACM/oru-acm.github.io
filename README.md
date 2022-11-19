@@ -3,6 +3,8 @@ Repository for ORU ACM's website
 
 Visit us here at [ORU ACM Chapter.](https://oru-acm.github.io/)
 
+This site is built as as responsive mobile-friendly site using [Bootstrap 5](https://getbootstrap.com/) and hosted on [GitHub Pages](https://pages.github.com/)
+
 ## Contributing
 If you would like to contribute to the development of this site, do the following.
 
@@ -13,8 +15,6 @@ Fork this repository:
 * The command to clone is: git clone url
 
 Creating a Pull Request
-Once you've made changes to your code and want to merge it to the original repository, do these:
-
 * Go to your repo on GitHub
 * Create a pull request
 * Make sure the main branch is chosen (should be by default)
