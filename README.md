@@ -3,7 +3,7 @@ Repository for ORU ACM's website
 
 Visit us here at [ORU ACM Chapter.](https://oru-acm.github.io/)
 
-This site is built as as responsive mobile-friendly site using [Bootstrap 5](https://getbootstrap.com/) and hosted on [GitHub Pages](https://pages.github.com/)
+This site is built as a responsive mobile-friendly site using [Bootstrap 5](https://getbootstrap.com/) and hosted on [GitHub Pages](https://pages.github.com/)
 
 ## Contributing
 If you would like to contribute to the development of this site, do the following.
