@@ -10,6 +10,8 @@ This site is built to be a responsive mobile-friendly site using [Bootstrap 5](h
 ## Contributing
 If you would like to contribute to the development of this site, do the following.
 
+Install and learn how to use [Git](https://git-scm.com/doc).
+
 Fork this repository:
 * Click on the Fork button to fork this repo to your account
 * Once it's forked, you'll want to clone it on your development machine
@@ -22,3 +24,4 @@ Creating a Pull Request
 * Make sure the main branch is chosen (should be by default)
 * Give a concise comment describing your code
 * Click Create Pull Request
+
