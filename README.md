@@ -3,7 +3,7 @@ Repository for ORU ACM's website
 
 Visit us here at [ORU ACM Chapter.](https://oru-acm.github.io/)
 
-This site is built to be a responsive mobile-friendly site using [Bootstrap 5](https://getbootstrap.com/) and hosted on [GitHub Pages](https://pages.github.com/)
+This site is a responsive mobile-friendly site using [Bootstrap 5](https://getbootstrap.com/) and hosted on [GitHub Pages](https://pages.github.com/)
 
 [Bootstrap 5](https://getbootstrap.com/) is a CSS framework developed at Twitter. It aid in the rapid development of websites and web apps by taking care of CSS.
 
