@@ -1,0 +1,5 @@
+# ignore tracking of images
+/img
+
+# vscode jargon
+/.vscode
