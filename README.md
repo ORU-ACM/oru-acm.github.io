@@ -25,3 +25,4 @@ Creating a Pull Request
 * Give a concise comment describing your code
 * Click Create Pull Request
 
+Credits: Special thanks to 2022-2023 Vice President Vice President [Khawm Mung](https://kmung.github.io/) for designing and putting the site together.
