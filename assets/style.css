@@ -26,6 +26,38 @@ body {
   padding: 0;
 }
 
+.animated-text {
+  animation: color-animation 4s linear infinite;
+}
+
+.animated-text-1 {
+  --color-1: #212E5C;
+  --color-2: #4E6DDB;
+  --color-3: #3D54A8;
+}
+
+.animated-text-2 {
+  --color-1: #CEC563;
+  --color-2: #D19214;
+  --color-3: #ADAB3E;
+}
+
+.animated-text-3 {
+  --color-1: #65DF5D;
+  --color-2: #3D9636;
+  --color-3: #2fc548;
+}
+
+@keyframes color-animation {
+    0%    {color: var(--color-1)}
+    32%   {color: var(--color-1)}
+    33%   {color: var(--color-2)}
+    65%   {color: var(--color-2)}
+    66%   {color: var(--color-3)}
+    99%   {color: var(--color-3)}
+    100%  {color: var(--color-1)}
+}
+
 footer {
   bottom: 0;
   width: 100%;
