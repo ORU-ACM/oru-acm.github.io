@@ -26,4 +26,4 @@ Creating a Pull Request
 * Click Create Pull Request
 
 ## Credits
-Special thanks to 2022-2023 Vice President [Khawm Mung](https://kmung.github.io/) for designing and putting the site together.
+Special thanks to 2022-2023 Vice President [Khawm Mung](https://kmung.github.io/) for the initial design and development of the site.
