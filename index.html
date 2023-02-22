@@ -100,11 +100,10 @@
           <div class="accordion accordion-flush" id="questions">
             <!-- Item 1 -->
             <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-one">Who Can Join?</button>
+              <h2 class="accordion-header" id="question-heading1">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question-one" aria-expanded="false" aria-controls="question-one">Who Can Join?</button>
               </h2>
-              <div
-                id="question-one" class="accordion-collapse collapse" data-bs-parent="#questions">
+              <div id="question-one" class="accordion-collapse collapse" aria-labelledby="question-heading1" data-bs-parent="#questions">
                 <div class="accordion-body">If you are an ORU student and want a community of programming enthusiasts, then this is the club for you. This club is not exclusive to Computer Science students only; all majors are welcome!</div>
               </div>
             </div>
